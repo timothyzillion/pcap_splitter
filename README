@@ -1,0 +1,5 @@
+Quick and dirty program for splitting PCAP files by "session" defined
+by the five tuple <src-IP, dst-IP, protocol, src-port, dst-port> (only
+valid for TCP and UDP, will automatically filter everything else out.
+
+Dependencies: libpcap, stl, ??
