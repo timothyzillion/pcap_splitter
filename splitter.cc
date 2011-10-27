@@ -1,5 +1,5 @@
 /*
- *
+ * Program to
  */
 
 #include <stdio.h>
@@ -9,6 +9,8 @@
 #include <pcap.h>
 
 #include "SessionHash.h"
+
+#include "fnv.h"
 
 static void usage(const char *p)
 {
@@ -34,10 +36,13 @@ int main(int argc, char **argv)
             usage(argv[0]);
         }
     }
+    if (inputFile == NULL) {
+        usage(argv[0]);
+    }
 
     input = pcap_open_offline(inputFile, pcapError);
     if (input == NULL) {
-        fprintf("Couldn't open %s: %s\n", inputFile, pcapError);
+        fprintf(stderr, "Couldn't open %s: %s\n", inputFile, pcapError);
         exit(1);
     }
 
