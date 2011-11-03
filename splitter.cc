@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <getopt.h>
 
+#include <string>
+
 #include <pcap.h>
 
 #include <net/ethernet.h>
@@ -17,6 +19,7 @@
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
 
+#include "Session.h"
 #include "SessionHash.h"
 
 #include "fnv.h"
@@ -44,7 +47,6 @@ int main(int argc, char **argv)
     char pcapError[PCAP_ERRBUF_SIZE];
     pcap_t *input;
     int link_type;
-//    CSessionHash sessions;
     char *inputFile=NULL;
     int opt;
 
@@ -53,6 +55,8 @@ int main(int argc, char **argv)
     const u_char *packet_data;
 
     struct packet_stats stats;
+
+    CSessionHash sessions;
 
     while ((opt = getopt(argc, argv, "f:")) != -1) {
         switch(opt) {
@@ -181,7 +185,6 @@ handle_packet(struct pcap_pkthdr *h, const u_char *pkt, struct packet_stats *s)
      * Make an arbitrary assumption of direction: servers have low ports.
      */
     if (src_port > dst_port) {
-
     } else {
     }
 }

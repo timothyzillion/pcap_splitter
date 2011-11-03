@@ -80,7 +80,6 @@
 
 #define FNV_VERSION "5.0.2" /* @(#) FNV Version */
 
-
 /*
  * 32 bit FNV-0 hash type
  */

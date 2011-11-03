@@ -1,11 +1,13 @@
+OBJS=splitter.o SessionHash.o Session.o hash_64a.o
+
 
 all: splitter
 
 clean:
-	rm -f splitter.o pcap_splitter
+	rm -f pcap_splitter ${OBJS}
 
-splitter: splitter.o hash_64a.o
-	gcc -g -o pcap_splitter splitter.o hash_64a.o -lpcap
+splitter: ${OBJS}
+	g++ -g -o pcap_splitter splitter.o SessionHash.o Session.o hash_64a.o -lpcap
 
 %.o : %cc
 	g++ -g -c $(CFLAGS) $< $@
