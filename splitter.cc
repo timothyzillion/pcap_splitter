@@ -12,6 +12,7 @@
 #include <string>
 
 #include <pcap.h>
+#include <assert.h>
 
 #include <net/ethernet.h>
 #include <netinet/in.h>
@@ -34,7 +35,8 @@ struct packet_stats {
     uint64_t other;
 };
 
-static void handle_packet(struct pcap_pkthdr *h, const u_char *pkt, struct packet_stats *s);
+static void handle_packet(CSessionHash *sh,
+                          struct pcap_pkthdr *h, const u_char *pkt, struct packet_stats *s);
 
 static void usage(const char *p)
 {
@@ -85,7 +87,7 @@ int main(int argc, char **argv)
     }
 
     while ((pcap_status = pcap_next_ex(input, &packet_header, &packet_data)) == 1) {
-        handle_packet(packet_header, packet_data, &stats);
+        handle_packet(&sessions, packet_header, packet_data, &stats);
     }
 
     if (pcap_status == -1) {
@@ -107,7 +109,7 @@ int main(int argc, char **argv)
  *
  */
 static void
-handle_packet(struct pcap_pkthdr *h, const u_char *pkt, struct packet_stats *s)
+handle_packet(CSessionHash *sh, struct pcap_pkthdr *h, const u_char *pkt, struct packet_stats *s)
 {
     struct ether_header *eh;
     uint16_t type;
@@ -123,6 +125,8 @@ handle_packet(struct pcap_pkthdr *h, const u_char *pkt, struct packet_stats *s)
     uint16_t dst_port;
 
     uint8_t *p;
+
+    CSession *sp;
 
     if (h->caplen < (sizeof(struct ether_header) + sizeof(struct iphdr))) {
         s->drop++;
@@ -184,7 +188,12 @@ handle_packet(struct pcap_pkthdr *h, const u_char *pkt, struct packet_stats *s)
     /*
      * Make an arbitrary assumption of direction: servers have low ports.
      */
-    if (src_port > dst_port) {
+    if (src_port < dst_port) {
+        sp = sh->getSession(src_addr, dst_addr, addr_len, src_port, dst_port);
     } else {
+        sp = sh->getSession(dst_addr, src_addr, addr_len, dst_port, src_port);
     }
+
+    assert(sp != NULL);
+    sp->addPacket(h, pkt);
 }

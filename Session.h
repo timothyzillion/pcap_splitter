@@ -13,7 +13,7 @@ public:
 
     CSession(std::string filename);
 
-    int add_packet(struct pcap_pkthdr *h, const u_char *pkt);
+    int addPacket(struct pcap_pkthdr *h, const u_char *pkt);
 };
 
 #endif
