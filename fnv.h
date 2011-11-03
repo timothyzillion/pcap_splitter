@@ -76,6 +76,10 @@
 #if !defined(__FNV_H__)
 #define __FNV_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <sys/types.h>
 
 #define FNV_VERSION "5.0.2" /* @(#) FNV Version */
@@ -243,5 +247,8 @@ extern void unknown_hash_type(char *prog, enum fnv_type type, int code);
 extern void print_fnv32(Fnv32_t hval, Fnv32_t mask, int verbose, char *arg);
 extern void print_fnv64(Fnv64_t hval, Fnv64_t mask, int verbose, char *arg);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __FNV_H__ */

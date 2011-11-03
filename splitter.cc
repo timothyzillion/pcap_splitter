@@ -126,7 +126,7 @@ handle_packet(CSessionHash *sh, struct pcap_pkthdr *h, const u_char *pkt, struct
 
     uint8_t *p;
 
-    CSession *sp;
+    CSession *sp=NULL;
 
     if (h->caplen < (sizeof(struct ether_header) + sizeof(struct iphdr))) {
         s->drop++;
