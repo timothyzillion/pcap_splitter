@@ -7,11 +7,15 @@
 
 class CSession
 {
-public:
+private:
     std::string m_filename;
-    FILE *m_file;
 
+    pcap_t *m_pcap;
+    pcap_dumper_t *m_pcap_dumper;
+
+public:
     CSession(std::string filename);
+    ~CSession(void);
 
     int addPacket(struct pcap_pkthdr *h, const u_char *pkt);
 };

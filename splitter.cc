@@ -90,6 +90,8 @@ int main(int argc, char **argv)
         handle_packet(&sessions, packet_header, packet_data, &stats);
     }
 
+    sessions.flush();
+
     if (pcap_status == -1) {
         fprintf(stderr, "Error reading file at packet %lu: %s\n", stats.count, pcap_geterr(input));
     } else {

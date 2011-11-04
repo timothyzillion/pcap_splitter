@@ -16,7 +16,8 @@ private:
     uint64_t calcHash(uint8_t *saddr, uint8_t *daddr, uint8_t addr_len, uint16_t sport, uint16_t dport);
 
 public:
-    CSessionHash();
+    CSessionHash(void);
+    ~CSessionHash(void);
 
     CSession *getSession(uint8_t *saddr, uint8_t *daddr, uint8_t addr_len, uint16_t sport, uint16_t dport);
     bool flush(void);

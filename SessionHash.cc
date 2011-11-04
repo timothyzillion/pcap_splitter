@@ -8,13 +8,20 @@
 
 #include <string>
 
+#include <pcap.h>
+
 #include "Session.h"
 #include "SessionHash.h"
 
 #include "fnv.h"
 
-CSessionHash::CSessionHash()
+CSessionHash::CSessionHash(void)
 {
+}
+
+CSessionHash::~CSessionHash(void)
+{
+    m_hash.clear();
 }
 
 CSession *
