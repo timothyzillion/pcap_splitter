@@ -40,8 +40,8 @@ CSessionHash::getSession(uint8_t *saddr, uint8_t *daddr, uint8_t addr_len, uint1
     char addr_buffer[INET6_ADDRSTRLEN];
     char port_buffer[6];
 
-    if (inet_pton(addr_len == 4 ? AF_INET : AF_INET6,
-                  (const char *)saddr, addr_buffer) == 0) {
+    if (inet_ntop(addr_len == 4 ? AF_INET : AF_INET6,
+                  (const char *)saddr, addr_buffer, INET6_ADDRSTRLEN) == NULL) {
         return NULL;
     }
 
@@ -50,8 +50,8 @@ CSessionHash::getSession(uint8_t *saddr, uint8_t *daddr, uint8_t addr_len, uint1
     filename += "_";
     filename += port_buffer;
 
-    if (inet_pton(addr_len == 4 ? AF_INET : AF_INET6,
-                  (const char *)daddr, addr_buffer) == 0) {
+    if (inet_ntop(addr_len == 4 ? AF_INET : AF_INET6,
+                  (const char *)daddr, addr_buffer, INET6_ADDRSTRLEN) == 0) {
         return NULL;
     }
 

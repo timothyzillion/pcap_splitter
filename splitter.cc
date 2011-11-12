@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include <string.h>
 
 #include <string>
 
@@ -73,6 +74,8 @@ int main(int argc, char **argv)
         usage(argv[0]);
     }
 
+    memset(&stats, 0, sizeof(stats));
+
     input = pcap_open_offline(inputFile, pcapError);
     if (input == NULL) {
         fprintf(stderr, "Couldn't open %s: %s\n", inputFile, pcapError);
@@ -87,6 +90,7 @@ int main(int argc, char **argv)
     }
 
     while ((pcap_status = pcap_next_ex(input, &packet_header, &packet_data)) == 1) {
+        stats.count++;
         handle_packet(&sessions, packet_header, packet_data, &stats);
     }
 
@@ -161,6 +165,8 @@ handle_packet(CSessionHash *sh, struct pcap_pkthdr *h, const u_char *pkt, struct
     if (ip->protocol == IPPROTO_TCP) {
         struct tcphdr *tcp;
 
+        s->tcp++;
+
         tcp = (struct tcphdr *)p;
         p += sizeof(struct tcphdr);
 
@@ -172,6 +178,8 @@ handle_packet(CSessionHash *sh, struct pcap_pkthdr *h, const u_char *pkt, struct
         dst_port = tcp->dest;
     } else if (ip->protocol == IPPROTO_UDP) {
         struct udphdr *udp;
+
+        s->udp++;
 
         udp = (struct udphdr *)p;
         p += sizeof(struct udphdr);
