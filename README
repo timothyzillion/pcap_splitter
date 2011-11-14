@@ -3,3 +3,13 @@ by the five tuple <src-IP, dst-IP, protocol, src-port, dst-port> (only
 valid for TCP and UDP, will automatically filter everything else out.
 
 Dependencies: libpcap, stl, ??
+
+The current version keeps its files open -- so it will potentially
+open a lot of files. The advantage of this, is that none of the
+packets are held in memory (so the memory footprint is very small).
+
+The intent of the design is to embed vectors of packets in the
+sessions, and then use some eviction policy to flush those out to the
+files; and to only open the files for the duration of the eviction of
+a particular vector of packets. Shouldn't be more than an hour or so
+of work to get the more scaleable version running.
